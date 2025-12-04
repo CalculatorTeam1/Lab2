@@ -1,24 +1,22 @@
 pipeline {
-    agent any
-
+    agent {
+        docker { image 'python:3.11' }
+    }
     stages {
         stage('Clone') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/CalculatorTeam1/Lab2.git'
+                git branch: 'main', url: 'https://github.com/CalculatorTeam1/Lab2.git'
             }
         }
-
         stage('Install dependencies') {
             steps {
                 sh '''
-                python3 -m venv venv
+                python -m venv venv
                 source venv/bin/activate
                 pip install -r requirements.txt
                 '''
             }
         }
-
         stage('Build/Test') {
             steps {
                 sh '''
@@ -27,15 +25,6 @@ pipeline {
                 echo "App validated successfully!"
                 '''
             }
-        }
-    }
-
-    post {
-        success {
-            echo "Build completed successfully!"
-        }
-        failure {
-            echo "Build failed!"
         }
     }
 }
