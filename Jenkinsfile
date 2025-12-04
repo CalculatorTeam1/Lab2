@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git branch: 'master',
+                git branch: 'main',
                     url: 'https://github.com/CalculatorTeam1/Lab2.git'
             }
         }
