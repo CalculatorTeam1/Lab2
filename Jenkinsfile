@@ -5,7 +5,7 @@ pipeline {
         stage('Clone') {
             steps {
                 git branch: 'master',
-                    url: 'https://github.com/USER/REPO.git'
+                    url: 'https://github.com/CalculatorTeam1/Lab2.git'
             }
         }
 
@@ -13,7 +13,7 @@ pipeline {
             steps {
                 sh '''
                 python3 -m venv venv
-                . venv/bin/activate
+                source venv/bin/activate
                 pip install -r requirements.txt
                 '''
             }
@@ -22,7 +22,7 @@ pipeline {
         stage('Build/Test') {
             steps {
                 sh '''
-                . venv/bin/activate
+                source venv/bin/activate
                 python -m py_compile app.py
                 echo "App validated successfully!"
                 '''
