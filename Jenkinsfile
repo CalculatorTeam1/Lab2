@@ -1,5 +1,14 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.11'
+            args '-u root:root'
+        }
+    }
+
+    environment {
+        VENV_DIR = 'venv'
+    }
 
     stages {
         stage('Clone') {
@@ -11,8 +20,8 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 sh '''
-                /usr/local/bin/python3 -m venv venv
-                source venv/bin/activate
+                python -m venv $VENV_DIR
+                source $VENV_DIR/bin/activate
                 pip install --upgrade pip
                 pip install -r requirements.txt
                 '''
@@ -22,9 +31,18 @@ pipeline {
         stage('Build/Test') {
             steps {
                 sh '''
-                source venv/bin/activate
+                source $VENV_DIR/bin/activate
                 python -m py_compile app.py
                 echo "App validated successfully!"
+                '''
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh '''
+                source $VENV_DIR/bin/activate
+                echo "No tests defined yet"
                 '''
             }
         }
